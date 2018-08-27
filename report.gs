@@ -96,3 +96,4 @@ function processReports() {
     rowI++;
     return user;
   });
+}

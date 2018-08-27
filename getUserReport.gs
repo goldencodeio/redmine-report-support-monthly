@@ -185,7 +185,7 @@ function getBossRatingAverage(user, i) {
 function getKPIRatingAverage(user, i) {
   var writtenTimeRating = getWrittenTimeRating(user, i);
   var clientRatingAverage = getClientRatingAverage(user, i);
-  var bossRatingAverage getBossRatingAverage(user, i);
+  var bossRatingAverage = getBossRatingAverage(user, i);
 
   return (writtenTimeRating + clientRatingAverage + bossRatingAverage) / 3;
 }
