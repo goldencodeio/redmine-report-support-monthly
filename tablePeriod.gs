@@ -19,5 +19,6 @@ function writePeriodUserRows(color) {
   performers.forEach(function(user, i) {
     var userData = APIRequest('users', {query: [{key: 'name', value: user}]}).users[0];
     sheet.getRange(rowI++, 1).setValue(userData.firstname + ' ' + userData.lastname + ' (' + userData.login + ')').setBackground(color);
-  });  
+    OPTIONS.performers[i] = userData;
+  });
 }

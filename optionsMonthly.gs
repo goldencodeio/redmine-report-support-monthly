@@ -5,7 +5,7 @@ function initMonthlyOptions() {
 
   getOptionsData();
 
-  var sheetName = 'Итог Месяц: ' + formatDate(OPTIONS.startDate).substr(0, 7);
+  var sheetName = 'Итог ' + OPTIONS.startDate.toLocaleDateString('ru-RU', {month: 'long', year: 'numeric'}).substr(2);
   var existingSheet = _ss.getSheetByName(sheetName);
   if (existingSheet) _ss.deleteSheet(existingSheet);
   createNewSheet(sheetName, '#ffd966');

@@ -28,10 +28,6 @@ function getUserReport(report, user, userIndex) {
       return getPaidSeparatelyTasks(user, userIndex);
       break;
 
-    case 'unsubscribed':
-      return getUnsubscribed(user, userIndex);
-      break;
-
     case 'claims':
       return getClaims(user, userIndex);
       break;
@@ -65,7 +61,8 @@ function getWrittenTimeRating(user, i) {
   }, 0);
 
   if (!OPTIONS.performersWorkHours[i]) return 0;
-  return (timeEntries / parseInt(OPTIONS.performersWorkHours[i], 10)) * 5;
+  var rating = (timeEntries / parseInt(OPTIONS.performersWorkHours[i], 10)) * 5;
+  return (rating > 5) ? 5 : rating;
 }
 
 function getCountTotalTasks(user, i) {
@@ -116,12 +113,10 @@ function getPaidSeparatelyTasks(user, i) {
     {key: 'assigned_to_id', value: user.id},
     {key: 'status_id', value: 'closed'},
     {key: 'closed_on', value: getDateRage(OPTIONS.startDate, OPTIONS.finalDate)},
-    {key: 'cf_24', value: 'Единовременная услуга (К оплате)'},
-    {key: 'cf_25', value: 'Единовременная услуга (К оплате)'},
-    {key: 'cf_26', value: 'Единовременная услуга (К оплате)'}
+    {key: 'cf_24', value: 'Единовременная услуга (К оплате)'}
   ]});
 
-  var paidSeparatelyTasksWithRate = paidSeparatelyTasks.filter(function(item) {
+  var paidSeparatelyTasksWithRate = res.issues.filter(function(item) {
     var rate = item.custom_fields.find(function(i) {return i.id === 7});
     if (rate && rate.value !== '') return true;
   });

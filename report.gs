@@ -29,11 +29,6 @@ var REPORT = [
    name: 'Оплачивается\nотдельно/\nОценено',
    manual: false
  },
-  {
-    code: 'unsubscribed',
-    name: 'Неотписано/\nОценено',
-    manual: false
-  },
  {
    code: 'claims',
    name: 'Претензий/\nОтработано',
@@ -53,6 +48,26 @@ var REPORT = [
    code: 'kpi_rating_avg',
    name: 'Коэффи-\nциент KPI',
    manual: false
+ },
+ {
+   code: 'penalty_claims',
+   name: 'Штраф за\nпретензии',
+   manual: true
+ },
+ {
+   code: 'penalty_delays',
+   name: 'Штраф за\nопоздания',
+   manual: true
+ },
+ {
+   code: 'bonus',
+   name: 'Премия',
+   manual: true
+ },
+ {
+   code: 'finally_bonus',
+   name: '% от премии',
+   manual: true
  }
 ];
 
@@ -67,7 +82,7 @@ function processReports() {
 
     REPORT.forEach(function(report) {
       if (!report.manual) {
-        var reportValue = getUserReport(report.code, user, userIndex);        
+        var reportValue = getUserReport(report.code, user, userIndex);
         if ((Array.isArray(reportValue))) {
           var listUrl = '';
           if ((Array.isArray(reportValue[0]))) {
@@ -82,12 +97,13 @@ function processReports() {
             sheet.getRange(rowI, columnI++).setValue(reportValue.length).setNote(listUrl);
           }
         } else {
-          if (report.code === 'work_time' && reportValue === 0) sheet.hideRows(rowI);
           sheet.getRange(rowI, columnI++).setValue(reportValue);
         }
       } else {
-        if (parseInt(OPTIONS.performersWorkHours[userIndex], 10) === 0) sheet.getRange(rowI, columnI).setValue(0);
-        ss.setNamedRange('manualRange' + rowI + columnI, sheet.getRange(sheet.getRange(rowI, columnI++).getA1Notation()));
+        if (report.code === 'finally_bonus') {
+          sheet.getRange(rowI, columnI).setFormula('=SUM(K' + rowI + '-L' + rowI + '-M' + rowI + '+N' + rowI + ')');
+        }
+        columnI++;
       }
     });
 
