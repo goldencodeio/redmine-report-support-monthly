@@ -67,8 +67,7 @@ function processReports() {
 
     REPORT.forEach(function(report) {
       if (!report.manual) {
-        var reportValue = getUserReport(report.code, user, userIndex);
-        user.reports[report] = reportValue;
+        var reportValue = getUserReport(report.code, user, userIndex);        
         if ((Array.isArray(reportValue))) {
           var listUrl = '';
           if ((Array.isArray(reportValue[0]))) {
