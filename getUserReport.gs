@@ -16,6 +16,10 @@ function getUserReport(report, user, userIndex) {
       return getCountDoneTasks(user, userIndex);
       break;
 
+    case 'integration_tasks':
+      return getIntegrationTasks(user, userIndex);
+      break;
+
     case 'critical_tasks':
       return getCountCriticalTasks(user, userIndex);
       break;
@@ -88,6 +92,22 @@ function getCountDoneTasks(user, userIndex) {
     if (rate && rate.value !== '') return true;
   });
   return [res.issues, filteredIssuesWithRate];
+}
+
+function getIntegrationTasks(user, i) {
+  var res = APIRequest('issues', {query: [
+    {key: 'tracker_id', value: 8},
+    {key: 'assigned_to_id', value: user.id},
+    {key: 'status_id', value: 'closed'},
+    {key: 'closed_on', value: getDateRage(OPTIONS.startDate, OPTIONS.finalDate)}
+  ]});
+
+  var IssuesWithRate = res.issues.filter(function(item) {
+    var rate = item.custom_fields.find(function(i) {return i.id === 7});
+    if (rate && rate.value !== '') return true;
+  });
+  
+  return [res.issues, IssuesWithRate];
 }
 
 function getCountCriticalTasks(user, i) {

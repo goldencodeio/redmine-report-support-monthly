@@ -20,6 +20,11 @@ var REPORT = [
     manual: false
   },
   {
+    code: 'integration_tasks',
+    name: 'Внедрение/\nОценено',
+    manual: false
+  },
+  {
     code: 'critical_tasks',
     name: 'Критических/\nОценено',
     manual: false
@@ -101,7 +106,7 @@ function processReports() {
         }
       } else {
         if (report.code === 'finally_bonus') {
-          sheet.getRange(rowI, columnI).setFormula('=SUM(K' + rowI + '-L' + rowI + '-M' + rowI + '+N' + rowI + ')');
+          sheet.getRange(rowI, columnI).setFormula('=SUM(L' + rowI + '-M' + rowI + '-N' + rowI + '+O' + rowI + ')');
         }
         columnI++;
       }
