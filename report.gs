@@ -10,6 +10,11 @@ var REPORT = [
     manual: false
   },
   {
+    code: 'over_time_hours',
+    name: 'Списано часов\nв не рабочее\nвремя',
+    manual: false
+  },
+  {
     code: 'total_tasks',
     name: 'Всего\nзадач',
     manual: false
@@ -106,7 +111,7 @@ function processReports() {
         }
       } else {
         if (report.code === 'finally_bonus') {
-          sheet.getRange(rowI, columnI).setFormula('=SUM(L' + rowI + '-M' + rowI + '-N' + rowI + '+O' + rowI + ')');
+          sheet.getRange(rowI, columnI).setFormula('=SUM(M' + rowI + '-N' + rowI + '-O' + rowI + '+P' + rowI + ')');
         }
         columnI++;
       }

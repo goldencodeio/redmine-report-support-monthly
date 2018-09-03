@@ -8,6 +8,10 @@ function getUserReport(report, user, userIndex) {
       return getWrittenTimeRating(user, userIndex);
       break;
 
+    case 'over_time_hours':
+      return getOverTimeHours(user, userIndex);
+      break;
+
     case 'total_tasks':
       return getCountTotalTasks(user, userIndex);
       break;
@@ -69,6 +73,18 @@ function getWrittenTimeRating(user, i) {
   return (rating > 5) ? 5 : rating;
 }
 
+function getOverTimeHours(user, i) {
+  var res = APIRequest('time_entries', {query: [
+    {key: 'user_id', value: user.id},
+    {key: 'spent_on', value: getDateRage(OPTIONS.startDate, OPTIONS.finalDate)},
+    {key: 'cf_19', value: '1'}
+  ]});
+
+  return res.time_entries.reduce(function(a, c) {
+    return a + c.hours;
+  }, 0);
+}
+
 function getCountTotalTasks(user, i) {
   var res = APIRequest('issues', {query: [
     {key: 'tracker_id', value: '!5'},
@@ -106,7 +122,7 @@ function getIntegrationTasks(user, i) {
     var rate = item.custom_fields.find(function(i) {return i.id === 7});
     if (rate && rate.value !== '') return true;
   });
-  
+
   return [res.issues, IssuesWithRate];
 }
 
