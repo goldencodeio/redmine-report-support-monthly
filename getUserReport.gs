@@ -61,15 +61,16 @@ function getWorkTime(i) {
 function getWrittenTimeRating(user, i) {
   var res = APIRequest('time_entries', {query: [
     {key: 'user_id', value: user.id},
-    {key: 'spent_on', value: getDateRage(OPTIONS.startDate, OPTIONS.finalDate)}
+    {key: 'spent_on', value: getDateRage(OPTIONS.startDate, OPTIONS.finalDate)},
+    {key: 'cf_19', value: '0'}
   ]});
 
-  var timeEntries = res.time_entries.reduce(function(a, c) {
+  var hoursInWorkTime = res.time_entries.reduce(function(a, c) {
     return a + c.hours;
   }, 0);
 
   if (!OPTIONS.performersWorkHours[i]) return 0;
-  var rating = (timeEntries / parseInt(OPTIONS.performersWorkHours[i], 10)) * 5;
+  var rating = ((hoursInWorkTime + getOverTimeHours(user, i) * 2) / parseInt(OPTIONS.performersWorkHours[i], 10)) * 5;
   return (rating > 5) ? 5 : rating;
 }
 
