@@ -105,6 +105,7 @@ function getCountDoneTasks(user, userIndex) {
   ]});
 
   var filteredIssuesWithRate = res.issues.filter(function(item) {
+    if (!item.custom_fields) return false;
     var rate = item.custom_fields.find(function(i) {return i.id === 7});
     if (rate && rate.value !== '') return true;
   });
